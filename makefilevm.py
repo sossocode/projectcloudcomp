@@ -1,5 +1,9 @@
 #Set up enviorment variables needed for autentication
 import os
+
+target = open("serverinfo.txt", 'w')
+target.truncate()
+
 config = {'username':os.environ['OS_USERNAME'], 
           'api_key':os.environ['OS_PASSWORD'],
           'project_id':os.environ['OS_TENANT_NAME'],
@@ -18,7 +22,8 @@ if not nc.keypairs.findall(name="cloudproj"):
 image = nc.images.find(name="Ubuntu Server 14.04 LTS (Trusty Tahr)")
 flavor = nc.flavors.find(name="m1.medium")
 user_data = open("userdata.yml", 'r')
-instance = nc.servers.create(name="G6-Project", image=image, flavor=flavor, key_name="cloudproj", userdata=user_data)
+keyname = "cloudproj"
+instance = nc.servers.create(name="G6-Project", image=image, flavor=flavor, key_name=keyname, userdata=user_data)
  
  
 # Poll at 5 second intervals, until the status is no longer 'BUILD'
@@ -44,3 +49,11 @@ print "Time out in 90 seconds to give the server a chance to start services and 
 time.sleep(90)
 print "Server should be good to go. Please proceed."
 
+line1 = "IP to server is: " + str(float_ip)
+line2 = "SSH key used is: " + keyname
+
+target.write(line1)
+target.write("\n")
+target.write(line2)
+target.write("\n")
+target.close()

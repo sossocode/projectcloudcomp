@@ -1,0 +1,2 @@
+IP to server is: 130.238.29.65
+SSH key used is: cloudproj
