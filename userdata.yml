@@ -1,0 +1,22 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+    - git
+    - python-pip
+    - python-virtualenv
+    - rabbitmq-server
+
+runcmd:
+    - mkdir /home/ubuntu/tmp
+    - git clone https://github.com/Iprenen/projectcloudcomp.git
+    - mkdir /home/ubuntu/messaging
+    - mv projectcloudcomp home/ubuntu/messaging
+    - cd /messaging
+    - virtualenv --no-site-packages venv
+    - source venv/bin/activate
+    - pip install celery
+    - curl -s http://fenicsproject.org/fenics-install.sh | bash
+
